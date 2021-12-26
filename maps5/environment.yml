@@ -1,0 +1,18 @@
+name: maps5
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8.3
+  - plotly
+  - pandas
+  - matplotlib
+  - streamlit
+  - protobuf
+  - openpyxl
+  - gdal=3.2.3
+  - pyproj=3.3.0
+  - fiona=1.8.19
+  - shapely=1.8.0
+  - geopandas=0.10.2
+prefix: C:\Users\alons\anaconda3\envs\maps5
