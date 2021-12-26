@@ -10,9 +10,9 @@ dependencies:
   - streamlit
   - protobuf
   - openpyxl
-  - gdal=3.2.3
-  - pyproj=3.3.0
-  - fiona=1.8.19
-  - shapely=1.8.0
-  - geopandas=0.10.2
+  - gdal
+  - pyproj
+  - fiona
+  - shapely
+  - geopandas
 prefix: C:\Users\alons\anaconda3\envs\maps5
