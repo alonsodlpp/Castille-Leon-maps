@@ -5,7 +5,7 @@ import pyproj
 import streamlit as st
 from PIL import Image
 
-img = Image.open("CyL.png")
+img = Image.open("C:/Users/alons/OneDrive/Escritorio/Elecciones Castilla y León 2022/CyL.png")
 st.set_page_config(page_title="CyL en mapas", page_icon=img)
 
 st.markdown(
@@ -65,18 +65,18 @@ else:
                                       ('Participación', 'PP', 'PSOE', 'Vox', 'Podemos', 'Ciudadanos', 'UPL', 'XAV'))
 
 
-mapa_cyl = "au.muni_cyl_recintos_comp.shp"
+mapa_cyl = "C:/Users/alons/OneDrive/Escritorio/Elecciones Castilla y León 2022/au.muni_cyl_recintos_comp2.shp"
 mapa_cyl = gpd.read_file(mapa_cyl)
 
 
 @st.cache(show_spinner=False)
 def seleccionar_elecciones(elecciones):
     if elecciones == "Elecciones generales noviembre de 2019":
-        cyl_datos = pd.read_excel("CyL.xlsx", sheet_name="CyL noviembre 2019")
+        cyl_datos = pd.read_excel("C:/Users/alons/OneDrive/Escritorio/Elecciones Castilla y León 2022/CyL.xlsx", sheet_name="CyL noviembre 2019")
     elif elecciones == "Elecciones autonómicas mayo de 2019":
-        cyl_datos = pd.read_excel("CyL.xlsx", sheet_name="CyL mayo 2019")
+        cyl_datos = pd.read_excel("C:/Users/alons/OneDrive/Escritorio/Elecciones Castilla y León 2022/CyL.xlsx", sheet_name="CyL mayo 2019")
     else:
-        cyl_datos = pd.read_excel("CyL.xlsx", sheet_name="CyL abril 2019")
+        cyl_datos = pd.read_excel("C:/Users/alons/OneDrive/Escritorio/Elecciones Castilla y León 2022/CyL.xlsx", sheet_name="CyL abril 2019")
 
     return cyl_datos
 
@@ -85,8 +85,7 @@ def seleccionar_elecciones(elecciones):
 def seleccionar_provincia(mapa, provincia):
     if provincia == 'Castilla y León':
         mapa_provincia = mapa
-        mapa_provincia.to_crs(pyproj.CRS.from_epsg(4326), inplace=True)
-        mapa_provincia["codmun"] = mapa_provincia["codmun"].astype(int)
+
     else:
         codigo_provincia = ""
         for prov, codigo in (("Ávila", "05"), ("Burgos", "09"), ("León", "24"), ("Palencia", "34"),
@@ -96,8 +95,9 @@ def seleccionar_provincia(mapa, provincia):
                 codigo_provincia = codigo
 
         mapa_provincia = mapa[mapa["c_prov_id"] == codigo_provincia]
-        mapa_provincia.to_crs(pyproj.CRS.from_epsg(4326), inplace=True)
-        mapa_provincia["codmun"] = mapa_provincia["codmun"].astype(int)
+
+    mapa_provincia.to_crs(pyproj.CRS.from_epsg(4326), inplace=True)
+    mapa_provincia["codmun"] = mapa_provincia["codmun"].astype(int)
 
     return mapa_provincia
 
