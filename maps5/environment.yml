@@ -1,0 +1,11 @@
+name: maps6
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9.0
+  - geopandas
+  - streamlit
+  - plotly
+  - openpyxl
+prefix: C:\Users\alons\anaconda3\envs\maps6
