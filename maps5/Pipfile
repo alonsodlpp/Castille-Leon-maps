@@ -7,11 +7,8 @@ name = "pypi"
 plotly = "*"
 streamlit = "*"
 openpyxl = "*"
-GDAL-3.2.3-cp37-cp37-win_amd64
-pyproj-3.3.0-cp37-cp37-win_amd64
-Fiona-1.8.19-cp37-cp37-win_amd64
-geopandas-0.10.2-py2.py3-none-any
-Shapely-1.8.0-cp37-cp37-win_amd64
+geopandas="0.10.2"
+
 
 [dev-packages]
 
