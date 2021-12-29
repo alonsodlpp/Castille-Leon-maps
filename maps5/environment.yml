@@ -1,4 +1,3 @@
-name: maps6
 channels:
   - conda-forge
   - defaults
@@ -8,4 +7,4 @@ dependencies:
   - streamlit
   - plotly
   - openpyxl
-prefix: C:\Users\alons\anaconda3\envs\maps6
+
