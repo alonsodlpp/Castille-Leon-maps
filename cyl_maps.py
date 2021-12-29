@@ -28,7 +28,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-st.markdown("<h4 style='text-align: center; '>A continuación se presentan en forma de mapas interactivos los resultados"
+st.markdown("<h4 style='text-align: center; '>A continuación se presentan en forma de mapas interactivos los resultados "
             "de las 3 últimas citas electorales en Castilla y Léon.</h4>",
             unsafe_allow_html=True)
 
