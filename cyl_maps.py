@@ -187,7 +187,7 @@ def pintar_mapa(mapa_provincia_merged):
         fig_provincia.update_coloraxes(cmin=minimo_color_votos, cmax=maximo_color_votos)
 
         fig_provincia.update_layout(
-            title_text='Resultados de ' + partido_elegido + ' en ' + provincia_elegida + ' (Elecciones generales noviembre 2019)',
+            title_text='Resultados de ' + partido_elegido + ' en ' + provincia_elegida + ' en las ' + elecciones_elegidas,
             title=dict(x=0.5),
             margin={"r":5,"t":35,"l":5,"b":10},
             hoverlabel =dict(align="left", bgcolor=bgcolor, font_family="Rockwell", font_size=14),
