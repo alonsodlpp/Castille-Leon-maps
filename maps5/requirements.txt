@@ -1,4 +1,0 @@
-geopandas
-openpyxl
-plotly
-streamlit
