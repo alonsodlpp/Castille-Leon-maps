@@ -8,7 +8,7 @@ plotly = "*"
 streamlit = "*"
 openpyxl = "*"
 geopandas="0.10.2"
-fiona="1.8.19"
+fiona="*"
 
 [dev-packages]
 
