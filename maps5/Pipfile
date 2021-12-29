@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+plotly = "*"
+streamlit = "*"
+openpyxl = "*"
+GDAL-3.2.3-cp39-cp39-win_amd64
+pyproj-3.3.0-cp39-cp39-win_amd64
+Fiona-1.8.19-cp39-cp39-win_amd64
+geopandas-0.10.2-py2.py3-none-any
+Shapely-1.8.0-cp39-cp39-win_amd64
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
