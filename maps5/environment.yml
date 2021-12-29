@@ -1,9 +1,0 @@
-channels:
-  - conda-forge
-  - defaults
-dependencies:
-  - geopandas
-  - streamlit
-  - plotly
-  - openpyxl
-
