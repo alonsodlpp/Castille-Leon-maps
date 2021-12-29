@@ -1,6 +1,5 @@
 altair
 argh
-argon-cffi
 astor
 async-generator
 attrs
