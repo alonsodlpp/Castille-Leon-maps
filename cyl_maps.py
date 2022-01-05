@@ -5,7 +5,7 @@ import pyproj
 import streamlit as st
 from PIL import Image
 
-img = Image.open("CyL.png")
+img = Image.open("C:/Users/alons/OneDrive/Escritorio/Elecciones Castilla y León 2022/CyL.png")
 st.set_page_config(page_title="CyL en mapas", page_icon=img)
 
 st.markdown(
@@ -28,7 +28,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-st.markdown("<h4 style='text-align: center; '>A continuación se presentan en forma de mapas interactivos los resultados "
+st.markdown("<h4 style='text-align: center; '>A continuación se presentan en forma de mapas interactivos los resultados"
             "de las 3 últimas citas electorales en Castilla y Léon.</h4>",
             unsafe_allow_html=True)
 
@@ -52,8 +52,34 @@ with c1:
 with c2:
     provincia_elegida = st.selectbox('Elija qué provincia desea visualizar:',
                                      ('Castilla y León', 'Ávila', 'Burgos', 'León', 'Palencia',
-                                      'Salamanca',
-                                      'Segovia', 'Soria', 'Valladolid', 'Zamora'))
+                                      'Salamanca', 'Segovia', 'Soria', 'Valladolid', 'Zamora'))
+    zoom = 8
+    if provincia_elegida == 'Castilla y León':
+        center = {"lat": 41.6300, "lon": -4.2700}
+        zoom = 6.5
+    elif provincia_elegida == 'Ávila':
+        center = {"lat": 40.6300, "lon": -5.0000}
+    elif provincia_elegida == 'Burgos':
+        center = {"lat": 42.3316, "lon": -3.5000}
+        zoom = 7.3
+    elif provincia_elegida == 'León':
+        center = {"lat": 42.6346, "lon": -5.9724}
+        zoom = 7.8
+    elif provincia_elegida == 'Palencia':
+        center = {"lat": 42.4000, "lon": -4.5400}
+        zoom = 7.75
+    elif provincia_elegida == 'Salamanca':
+        center = {"lat": 40.7500, "lon": -6.0255}
+    elif provincia_elegida == 'Segovia':
+        center = {"lat": 41.1000, "lon": -4.0000}
+        zoom = 8.2
+    elif provincia_elegida == 'Soria':
+        center = {"lat": 41.6000, "lon": -2.5959}
+    elif provincia_elegida == 'Valladolid':
+        center = {"lat": 41.6987, "lon": -4.8418}
+        zoom = 7.85
+    else:
+        center = {"lat": 41.6880, "lon": -6.0919}
 
 if modo == 'Ganador de las elecciones':
     with c3:
@@ -65,18 +91,18 @@ else:
                                       ('Participación', 'PP', 'PSOE', 'Vox', 'Podemos', 'Ciudadanos', 'UPL', 'XAV'))
 
 
-mapa_cyl = "au.muni_cyl_recintos_comp.shp"
+mapa_cyl = "C:/Users/alons/OneDrive/Escritorio/Elecciones Castilla y León 2022/au.muni_cyl_recintos_comp.shp"
 mapa_cyl = gpd.read_file(mapa_cyl)
 
 
 @st.cache(show_spinner=False)
 def seleccionar_elecciones(elecciones):
     if elecciones == "Elecciones generales noviembre de 2019":
-        cyl_datos = pd.read_excel("CyL.xlsx", sheet_name="CyL noviembre 2019")
+        cyl_datos = pd.read_excel("C:/Users/alons/OneDrive/Escritorio/Elecciones Castilla y León 2022/CyL.xlsx", sheet_name="CyL noviembre 2019")
     elif elecciones == "Elecciones autonómicas mayo de 2019":
-        cyl_datos = pd.read_excel("CyL.xlsx", sheet_name="CyL mayo 2019")
+        cyl_datos = pd.read_excel("C:/Users/alons/OneDrive/Escritorio/Elecciones Castilla y León 2022/CyL.xlsx", sheet_name="CyL mayo 2019")
     else:
-        cyl_datos = pd.read_excel("CyL.xlsx", sheet_name="CyL abril 2019")
+        cyl_datos = pd.read_excel("C:/Users/alons/OneDrive/Escritorio/Elecciones Castilla y León 2022/CyL.xlsx", sheet_name="CyL abril 2019")
 
     return cyl_datos
 
@@ -113,93 +139,107 @@ def preparar_dataframe():
 
 
 @st.cache(suppress_st_warning=True, show_spinner=False)
-def pintar_mapa(mapa_provincia_merged):
-    if modo == 'Ganador de las elecciones':
-        fig_provincia = px.choropleth(mapa_provincia_merged, geojson=mapa_provincia_merged.geometry,
-                                      locations=mapa_provincia_merged.index, color=ganador,
-                                      color_discrete_map={"PSOE":"red",
-                                                          "PP":"blue",
-                                                          "VOX":'green',
-                                                          "Podemos":"purple",
-                                                          "Ciudadanos":"orange",
-                                                          "UPL":"brown",
-                                                          "Por Ávila":"black"},
+def pintar_mapa_ganador(mapa_provincia_merged, coordenadas, zoom_arg):
+    fig_provincia = px.choropleth_mapbox(mapa_provincia_merged, geojson=mapa_provincia_merged.geometry,
+                                         locations=mapa_provincia_merged.index, color=ganador,
+                                         color_discrete_map={"PSOE":"red",
+                                                             "PP":"blue",
+                                                             "VOX":'green',
+                                                             "Podemos":"purple",
+                                                             "Ciudadanos":"orange",
+                                                             "UPL":"brown",
+                                                             "Por Ávila":"black"},
+                                         hover_data=(["Provincia", "Segundo"] if ganador == "Ganador" else ["Provincia", "Ganador"]),
+                                         center=coordenadas,
+                                         mapbox_style="stamen-terrain",
+                                         zoom=zoom_arg,
+                                         opacity=0.8,
+                                         height=600)
+    fig_provincia.update_geos(fitbounds="locations", visible=False)
 
-                                      hover_data=(["Provincia", "Segundo"] if ganador == "Ganador" else ["Provincia", "Ganador"]),
-                                      height=600)
-        fig_provincia.update_geos(fitbounds="locations", visible=False)
+    fig_provincia.update_layout(
+        title_text=('Primera' if ganador=="Ganador" else 'Segunda') + ' fuerza en cada municipio de ' + provincia_elegida + ' en las ' + elecciones_elegidas,
+        title=dict(x=0.5),
+        plot_bgcolor="rgb(245, 245, 245)",
+        margin={"r": 5, "t": 35, "l": 5, "b": 10},
+        hoverlabel=dict(align="left", bgcolor="forestgreen", font_family="Rockwell", font_size=14))
+    fig_provincia.update_traces(marker=dict(line=dict(color='grey')))
 
-        fig_provincia.update_layout(
-            title_text=('Primera' if ganador=="Ganador" else 'Segunda') + ' fuerza en cada municipio de ' + provincia_elegida + ' en las ' + elecciones_elegidas,
-            title=dict(x=0.5),
-            plot_bgcolor="rgb(245, 245, 245)",
-            margin={"r": 5, "t": 35, "l": 5, "b": 10},
-            hoverlabel=dict(align="left", bgcolor="forestgreen", font_family="Rockwell", font_size=14))
-        fig_provincia.update_traces(marker=dict(line=dict(color='grey')))
+    return fig_provincia
 
+
+def pintar_mapa_partidos(mapa_provincia_merged, coordenadas, zoom_arg):
+    minimo_color_votos = 5
+    maximo_color_votos = 40
+    hover_data = ["Provincia", "Total censo electoral", partido_elegido + " Votos", partido_elegido + " %"]
+    color_axis_colorbar = {'title':' % Votos',
+                           'tickvals': ["10", "20", "30", "40"],
+                           'ticktext': ["10", "20", "30", "40 o más"]}
+
+    if partido_elegido == "PSOE":
+        color = "Reds"
+        bgcolor = "indianred"
+    elif partido_elegido == "PP":
+        color = "Blues"
+        bgcolor = "lightblue"
+    elif partido_elegido == "Vox":
+        color = "Greens"
+        bgcolor = "forestgreen"
+    elif partido_elegido == "Podemos":
+        color = "Purples"
+        bgcolor = "rebeccapurple"
+    elif partido_elegido == "Ciudadanos":
+        color = "Oranges"
+        bgcolor = "orangered"
+    elif partido_elegido == "UPL":
+        st.warning("El partido UPL sólo se presenta en las circunscripciones de León, Zamora y Salamanca")
+        color = "pinkyl"
+        bgcolor = "deeppink"
+    elif partido_elegido == "XAV":
+        st.warning("El partido XAV (Por Ávila) sólo se presenta en la circunscripción de Ávila")
+        color = "Greys"
+        bgcolor = "darkgray"
     else:
-        minimo_color_votos = 5
-        maximo_color_votos = 40
-        hover_data = ["Provincia", "Total votos", partido_elegido + " Votos", partido_elegido + " %"]
-        color_axis_colorbar = {'title':' % Votos',
-                               'tickvals': ["10", "20", "30", "40"],
-                               'ticktext': ["10", "20", "30", "40 o más"]}
+        color = "turbid"
+        bgcolor = "floralwhite"
+        minimo_color_votos = 40
+        maximo_color_votos = 90
+        hover_data = ["Provincia", "Total censo electoral", "Total votos", partido_elegido + " %"]
+        color_axis_colorbar = {'title': ' % Votos',
+                               'tickvals': ["40", "50", "60", "70", "80", "90"],
+                               'ticktext': ["40", "50", "60", "70", "80", "90 o más"]}
 
-        if partido_elegido == "PSOE":
-            color = "Reds"
-            bgcolor = "indianred"
-        elif partido_elegido == "PP":
-            color = "Blues"
-            bgcolor = "lightblue"
-        elif partido_elegido == "Vox":
-            color = "Greens"
-            bgcolor = "forestgreen"
-        elif partido_elegido == "Podemos":
-            color = "Purples"
-            bgcolor = "rebeccapurple"
-        elif partido_elegido == "Ciudadanos":
-            color = "Oranges"
-            bgcolor = "orangered"
-        elif partido_elegido == "UPL":
-            st.warning("El partido UPL sólo se presenta en las circunscripciones de León, Zamora y Salamanca")
-            color = "pinkyl"
-            bgcolor = "deeppink"
-        elif partido_elegido == "XAV":
-            st.warning("El partido XAV (Por Ávila) sólo se presenta en la circunscripción de Ávila")
-            color = "Greys"
-            bgcolor = "darkgray"
-        else:
-            color = "turbid"
-            bgcolor = "floralwhite"
-            minimo_color_votos = 40
-            maximo_color_votos = 90
-            hover_data = ["Provincia", "Total censo electoral", "Total votos", partido_elegido + " %"]
-            color_axis_colorbar = {'title': ' % Votos',
-                                   'tickvals': ["40", "50", "60", "70", "80", "90"],
-                                   'ticktext': ["40", "50", "60", "70", "80", "90 o más"]}
+    fig_provincia = px.choropleth_mapbox(mapa_provincia_merged, geojson=mapa_provincia_merged.geometry,
+                                         locations=mapa_provincia_merged.index, color=partido_elegido + " %",
+                                         hover_data=hover_data,
+                                         color_continuous_scale=color,
+                                         center=coordenadas,
+                                         mapbox_style="open-street-map",
+                                         opacity=0.75,
+                                         zoom=zoom_arg,
+                                         height=600)
+    fig_provincia.update_geos(fitbounds="locations", visible=False)
+    fig_provincia.update_coloraxes(cmin=minimo_color_votos, cmax=maximo_color_votos)
 
-        fig_provincia = px.choropleth(mapa_provincia_merged, geojson=mapa_provincia_merged.geometry,
-                                      locations=mapa_provincia_merged.index, color=partido_elegido + " %",
-                                      hover_data=hover_data,
-                                      color_continuous_scale=color,
-                                      height=600)
-        fig_provincia.update_geos(fitbounds="locations", visible=False)
-        fig_provincia.update_coloraxes(cmin=minimo_color_votos, cmax=maximo_color_votos)
-
-        fig_provincia.update_layout(
-            title_text='Resultados de ' + partido_elegido + ' en ' + provincia_elegida + ' en las ' + elecciones_elegidas,
-            title=dict(x=0.5),
-            margin={"r":5,"t":35,"l":5,"b":10},
-            hoverlabel =dict(align="left", bgcolor=bgcolor, font_family="Rockwell", font_size=14),
-            coloraxis_colorbar=color_axis_colorbar)
+    fig_provincia.update_layout(
+        title_text='Resultados de ' + partido_elegido + ' en ' + provincia_elegida + ' (Elecciones generales noviembre 2019)',
+        title=dict(x=0.5),
+        margin={"r":5,"t":35,"l":5,"b":10},
+        hoverlabel =dict(align="left", bgcolor=bgcolor, font_family="Rockwell", font_size=14),
+        coloraxis_colorbar=color_axis_colorbar)
 
     return fig_provincia
 
 
 try:
-    mapa_provincia = preparar_dataframe()
-    mapa = pintar_mapa(mapa_provincia)
-    st.plotly_chart(mapa, use_container_width=True)
+    if modo == "Ganador de las elecciones":
+        mapa_provincia = preparar_dataframe()
+        mapa = pintar_mapa_ganador(mapa_provincia, center, zoom)
+        st.plotly_chart(mapa, use_container_width=True)
+    else:
+        mapa_provincia = preparar_dataframe()
+        mapa = pintar_mapa_partidos(mapa_provincia, center, zoom)
+        st.plotly_chart(mapa, use_container_width=True)
 except ValueError:
      st.warning("La configuración que ha elegido da lugar a un resultado inexistente."
                 "Si ha seleccionado UPL o XAV en las elecciones de abril de 2019, no se puede desplegar ningún mapa,"
