@@ -178,11 +178,12 @@ def pintar_mapa(mapa_provincia_merged):
                                    'tickvals': ["40", "50", "60", "70", "80", "90"],
                                    'ticktext': ["40", "50", "60", "70", "80", "90 o más"]}
 
-        fig_provincia = px.choropleth(mapa_provincia_merged, geojson=mapa_provincia_merged.geometry,
-                                      locations=mapa_provincia_merged.index, color=partido_elegido + " %",
-                                      hover_data=hover_data,
-                                      color_continuous_scale=color,
-                                      height=600)
+        fig_provincia = px.choropleth_mapbox(mapa_provincia_merged, geojson=mapa_provincia_merged.geometry,
+                                             locations=mapa_provincia_merged.index, color=partido_elegido + " %",
+                                             hover_data=hover_data,
+                                             color_continuous_scale=color,
+                                             height=600,
+                                             mapbox_style="open-street-map")
         fig_provincia.update_geos(fitbounds="locations", visible=False)
         fig_provincia.update_coloraxes(cmin=minimo_color_votos, cmax=maximo_color_votos)
 
