@@ -151,7 +151,7 @@ def pintar_mapa_ganador(mapa_provincia_merged, coordenadas, zoom_arg):
                                                              "Por Ávila":"black"},
                                          hover_data=(["Provincia", "Segundo"] if ganador == "Ganador" else ["Provincia", "Ganador"]),
                                          center=coordenadas,
-                                         mapbox_style="stamen-terrain",
+                                         mapbox_style="open-street-map",
                                          zoom=zoom_arg,
                                          opacity=0.8,
                                          height=600)
