@@ -153,7 +153,7 @@ def pintar_mapa_ganador(mapa_provincia_merged, coordenadas, zoom_arg):
                                          center=coordenadas,
                                          mapbox_style="open-street-map",
                                          zoom=zoom_arg,
-                                         opacity=0.8,
+                                         opacity=0.75,
                                          height=600)
     fig_provincia.update_geos(fitbounds="locations", visible=False)
 
