@@ -183,7 +183,7 @@ def pintar_mapa(mapa_provincia_merged):
                                              hover_data=hover_data,
                                              color_continuous_scale=color,
                                              height=600,
-                                             center = {"lat": 41.2300, "lon": 4.2700},
+                                             center = {"lat": 41.2300, "lon": -4.2700},
                                              mapbox_style="open-street-map")
         fig_provincia.update_geos(fitbounds="locations", visible=False)
         fig_provincia.update_coloraxes(cmin=minimo_color_votos, cmax=maximo_color_votos)
