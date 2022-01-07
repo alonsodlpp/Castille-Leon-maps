@@ -171,7 +171,7 @@ def pintar_mapa_ganador(mapa_provincia_merged, coordenadas, zoom_arg):
 def pintar_mapa_partidos(mapa_provincia_merged, coordenadas, zoom_arg):
     minimo_color_votos = 5
     maximo_color_votos = 40
-    hover_data = ["Provincia", "Total censo electoral", partido_elegido + " Votos", partido_elegido + " %"]
+    hover_data = ["Provincia", "Total votos", partido_elegido + " Votos", partido_elegido + " %"]
     color_axis_colorbar = {'title':' % Votos',
                            'tickvals': ["10", "20", "30", "40"],
                            'ticktext': ["10", "20", "30", "40 o más"]}
