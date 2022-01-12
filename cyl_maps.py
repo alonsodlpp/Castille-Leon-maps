@@ -6,7 +6,7 @@ from PIL import Image
 import streamlit as st
 
 
-img = Image.open("C:/Users/alons/OneDrive/Documentos/Elecciones Castilla y León 2022/CyL.png")
+img = Image.open("CyL.png")
 st.set_page_config(page_title="CyL en mapas", page_icon=img)
 
 st.markdown(
@@ -63,7 +63,7 @@ else:
                                        ('Participación', 'PP', 'PSOE', 'VOX', 'Podemos', 'Ciudadanos', 'UPL', 'XAV'))
 
 
-mapa_cyl = "C:/Users/alons/OneDrive/Documentos/Elecciones Castilla y León 2022/au.muni_cyl_recintos_comp.shp"
+mapa_cyl = "au.muni_cyl_recintos_comp.shp"
 mapa_cyl = gpd.read_file(mapa_cyl)
 
 
@@ -79,11 +79,11 @@ def seleccionar_elecciones(elecciones):
     """
 
     if elecciones == "Elecciones generales noviembre de 2019":
-        cyl_datos = pd.read_excel("C:/Users/alons/OneDrive/Documentos/Elecciones Castilla y León 2022/CyL.xlsx", sheet_name="CyL noviembre 2019")
+        cyl_datos = pd.read_excel("CyL.xlsx", sheet_name="CyL noviembre 2019")
     elif elecciones == "Elecciones autonómicas mayo de 2019":
-        cyl_datos = pd.read_excel("C:/Users/alons/OneDrive/Documentos/Elecciones Castilla y León 2022/CyL.xlsx", sheet_name="CyL mayo 2019")
+        cyl_datos = pd.read_excel("CyL.xlsx", sheet_name="CyL mayo 2019")
     else:
-        cyl_datos = pd.read_excel("C:/Users/alons/OneDrive/Documentos/Elecciones Castilla y León 2022/CyL.xlsx", sheet_name="CyL abril 2019")
+        cyl_datos = pd.read_excel("CyL.xlsx", sheet_name="CyL abril 2019")
 
     return cyl_datos
 
