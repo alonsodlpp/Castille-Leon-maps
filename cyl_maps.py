@@ -61,6 +61,9 @@ else:
     with c3:
         partido_elegido = st.selectbox('Elija un partido o la participación electoral:',
                                        ('Participación', 'PP', 'PSOE', 'VOX', 'Podemos', 'Ciudadanos', 'UPL', 'XAV'))
+        
+mapa_cyl = "au.muni_cyl_recintos_comp.shp"
+mapa_cyl = gpd.read_file(mapa_cyl)
 
 
         
@@ -245,9 +248,6 @@ def pintar_mapa_partidos(mapa_provincia_merged, zoom_arg, coordenadas, partido):
 
 
 try:
-    mapa_cyl = "au.muni_cyl_recintos_comp.shp"
-    mapa_cyl = gpd.read_file(mapa_cyl)
-
     cyl_elecciones = seleccionar_elecciones(elecciones_elegidas)
     mapa_prov, zoom_prov, coord_prov = seleccionar_provincia(mapa_cyl, provincia_elegida)
     mapa_prov_merged = mapa_prov.merge(cyl_elecciones, on="codmun")
