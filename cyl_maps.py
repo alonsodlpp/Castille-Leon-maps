@@ -6,7 +6,7 @@ from PIL import Image
 import streamlit as st
 
 
-img = Image.open("CyL.png")
+img = Image.open("C:/Users/alons/OneDrive/Documentos/Elecciones Castilla y León 2022/CyL.png")
 st.set_page_config(page_title="CyL en mapas", page_icon=img)
 
 st.markdown(
@@ -63,7 +63,7 @@ else:
                                        ('Participación', 'PP', 'PSOE', 'VOX', 'Podemos', 'Ciudadanos', 'UPL', 'XAV'))
 
 
-mapa_cyl = "au.muni_cyl_recintos_comp.shp"
+mapa_cyl = "C:/Users/alons/OneDrive/Documentos/Elecciones Castilla y León 2022/au.muni_cyl_recintos_comp.shp"
 mapa_cyl = gpd.read_file(mapa_cyl)
 
 
@@ -75,15 +75,14 @@ def seleccionar_elecciones(elecciones):
     Parámetros
     ----------
     elecciones: str
-    
     """
 
     if elecciones == "Elecciones generales noviembre de 2019":
-        cyl_datos = pd.read_excel("CyL_elecciones.xlsx", sheet_name="CyL noviembre 2019")
+        cyl_datos = pd.read_excel("C:/Users/alons/OneDrive/Documentos/Elecciones Castilla y León 2022/CyL.xlsx", sheet_name="CyL noviembre 2019")
     elif elecciones == "Elecciones autonómicas mayo de 2019":
-        cyl_datos = pd.read_excel("CyL_elecciones.xlsx", sheet_name="CyL mayo 2019")
+        cyl_datos = pd.read_excel("C:/Users/alons/OneDrive/Documentos/Elecciones Castilla y León 2022/CyL.xlsx", sheet_name="CyL mayo 2019")
     else:
-        cyl_datos = pd.read_excel("CyL_elecciones.xlsx", sheet_name="CyL abril 2019")
+        cyl_datos = pd.read_excel("C:/Users/alons/OneDrive/Documentos/Elecciones Castilla y León 2022/CyL.xlsx", sheet_name="CyL abril 2019")
 
     return cyl_datos
 
@@ -97,7 +96,6 @@ def seleccionar_provincia(mapa, provincia):
     ----------
     mapa: shape file
     provincia: str
-    
     """
 
     zoom_provincia = 0
@@ -132,22 +130,6 @@ def seleccionar_provincia(mapa, provincia):
     return mapa_provincia, zoom_provincia, center_provincia
 
 
-@st.cache(show_spinner=False)
-def preparar_datos():
-    """
-    Devuelve el dataframe resultado de hacer "join" al geopandas con los datos de las elecciones, junto al zoom
-    y a las coordenadas correspondientes para la correcta visualización de cada provincia.
-    
-    """
-
-    cyl_datos = seleccionar_elecciones(elecciones_elegidas)
-    mapa_prov, zoom_prov, center_prov = seleccionar_provincia(mapa_cyl, provincia_elegida)
-    mapa_provincia_merged = mapa_prov.merge(cyl_datos, on="codmun")
-    mapa_provincia_merged = mapa_provincia_merged.set_index("Municipio")
-
-    return mapa_provincia_merged, zoom_prov, center_prov
-
-
 @st.cache(suppress_st_warning=True, show_spinner=False)
 def pintar_mapa_ganador(mapa_provincia_merged, zoom_arg, coordenadas):
     """
@@ -159,7 +141,6 @@ def pintar_mapa_ganador(mapa_provincia_merged, zoom_arg, coordenadas):
     mapa_provincia_merged: geopandas
     zoom_arg: int
     coordenadas: dict
-    
     """
 
     fig_provincia = px.choropleth_mapbox(mapa_provincia_merged, geojson=mapa_provincia_merged.geometry,
@@ -201,7 +182,7 @@ def pintar_mapa_partidos(mapa_provincia_merged, zoom_arg, coordenadas, partido):
         zoom_arg: int
         coordenadas: dict
         partido: str
-        
+
     """
 
     minimo_color_votos = 5
@@ -267,15 +248,19 @@ def pintar_mapa_partidos(mapa_provincia_merged, zoom_arg, coordenadas, partido):
 
 
 try:
+    cyl_elecciones = seleccionar_elecciones(elecciones_elegidas)
+    mapa_prov, zoom_prov, coord_prov = seleccionar_provincia(mapa_cyl, provincia_elegida)
+    mapa_prov_merged = mapa_prov.merge(cyl_elecciones, on="codmun")
+    mapa_prov_merged = mapa_prov_merged.set_index("Municipio")
+
     if modo == "Ganador de las elecciones":
-        mapa_provincia_final, zoom_provincia_cyl, coord_provincia = preparar_datos()
-        mapa_final = pintar_mapa_ganador(mapa_provincia_final, zoom_provincia_cyl, coord_provincia)
+        mapa_final = pintar_mapa_ganador(mapa_prov_merged, zoom_prov, coord_prov)
         st.plotly_chart(mapa_final, use_container_width=True)
     else:
-        mapa_provincia_final, zoom_provincia_cyl, coord_provincia = preparar_datos()
-        mapa_final = pintar_mapa_partidos(mapa_provincia_final, zoom_provincia_cyl, coord_provincia, partido_elegido)
+        mapa_final = pintar_mapa_partidos(mapa_prov_merged, zoom_prov, coord_prov, partido_elegido)
         st.plotly_chart(mapa_final, use_container_width=True)
 except ValueError:
     st.warning("La configuración que ha elegido da lugar a un resultado inexistente."
                "Si ha seleccionado UPL o XAV en las elecciones de abril de 2019, no se puede desplegar ningún mapa,"
                " pues estos partidos no concurrieron a dichas elecciones. Por favor, seleccione otra configuración.")
+
