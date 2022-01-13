@@ -74,11 +74,11 @@ def seleccionar_elecciones(elecciones):
     """
 
     if elecciones == "Elecciones generales noviembre de 2019":
-        cyl_datos = pd.read_excel("CyL_datos_elecciones.xlsx", sheet_name="CyL noviembre 2019")
+        cyl_datos = pd.read_excel("CyL_datos_elecciones_.xlsx", sheet_name="CyL noviembre 2019")
     elif elecciones == "Elecciones autonómicas mayo de 2019":
-        cyl_datos = pd.read_excel("CyL_datos_elecciones.xlsx", sheet_name="CyL mayo 2019")
+        cyl_datos = pd.read_excel("CyL_datos_elecciones_.xlsx", sheet_name="CyL mayo 2019")
     else:
-        cyl_datos = pd.read_excel("CyL_datos_elecciones.xlsx", sheet_name="CyL abril 2019")
+        cyl_datos = pd.read_excel("CyL_datos_elecciones_.xlsx", sheet_name="CyL abril 2019")
 
     return cyl_datos
 
