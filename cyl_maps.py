@@ -162,6 +162,7 @@ def pintar_mapa_ganador(mapa_provincia_merged, zoom_arg, coordenadas):
         title=dict(x=0.5),
         plot_bgcolor="rgb(245, 245, 245)",
         margin={"r": 5, "t": 35, "l": 5, "b": 10},
+        showlegend=False,
         hoverlabel=dict(align="left", bgcolor="forestgreen", font_family="Rockwell", font_size=14))
     fig_provincia.update_traces(marker=dict(line=dict(color='grey')))
 
