@@ -74,11 +74,11 @@ def seleccionar_elecciones(elecciones):
     """
 
     if elecciones == "Elecciones generales noviembre de 2019":
-        cyl_datos = pd.read_excel("CyL_elecciones.xlsx", sheet_name="CyL noviembre 2019")
+        cyl_datos = pd.read_excel("CyL_datos_elecciones.xlsx", sheet_name="CyL noviembre 2019")
     elif elecciones == "Elecciones autonómicas mayo de 2019":
-        cyl_datos = pd.read_excel("CyL_elecciones.xlsx", sheet_name="CyL mayo 2019")
+        cyl_datos = pd.read_excel("CyL_datos_elecciones.xlsx", sheet_name="CyL mayo 2019")
     else:
-        cyl_datos = pd.read_excel("CyL_elecciones.xlsx", sheet_name="CyL abril 2019")
+        cyl_datos = pd.read_excel("CyL_datos_elecciones.xlsx", sheet_name="CyL abril 2019")
 
     return cyl_datos
 
@@ -147,7 +147,8 @@ def pintar_mapa_ganador(mapa_provincia_merged, zoom_arg, coordenadas):
                                                              "Podemos": "purple",
                                                              "Ciudadanos": "orange",
                                                              "UPL": "brown",
-                                                             "Por Ávila": "black"},
+                                                             "Por Ávila": "black",
+                                                             "Territorio común (condominio)": "#CEFFEA"},
                                          hover_data=(["Provincia", "Segundo"] if ganador == "Ganador" else ["Provincia", "Ganador"]),
                                          center=coordenadas,
                                          mapbox_style="open-street-map",
@@ -258,6 +259,9 @@ try:
     else:
         mapa_final = pintar_mapa_partidos(mapa_prov_merged, zoom_prov, coord_prov, partido_elegido)
         st.plotly_chart(mapa_final, use_container_width=True)
+    st.markdown("""
+        <div style="text-align:right">©Junta de Castilla y León</div>
+    """, unsafe_allow_html=True)
 except ValueError:
     st.warning("La configuración que ha elegido da lugar a un resultado inexistente."
                "Si ha seleccionado UPL o XAV en las elecciones de abril de 2019, no se puede desplegar ningún mapa,"
