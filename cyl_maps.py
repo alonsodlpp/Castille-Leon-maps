@@ -7,7 +7,7 @@ import streamlit as st
 
 
 img = Image.open("CyL.png")
-st.set_page_config(page_title="CyL en mapas", page_icon=img)
+st.set_page_config(page_title="CyL en mapas", page_icon=img, layout="wide")
 
 st.markdown(
         f""" <style>.reportview-container .main .block-container{{
