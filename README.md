@@ -10,7 +10,7 @@ En este proyecto se ha creado una aplicación web que muestra a través de mapas
 
 El enlace para ver la aplicación web en Streamlit Cloud es: https://share.streamlit.io/alonsodlpp/castille-leon-maps/cyl_maps.py
 
-# Castilla y León en mapas
+# Castilla y León maps
 
 In this project a web app has been created which shows, by means of interactive maps, the results of the elections in Castilla y León.
 
